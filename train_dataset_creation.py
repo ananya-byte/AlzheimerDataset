@@ -9,3 +9,9 @@ label = file_name[:x.span()[0]]
 train_dataset = {}
 train_dataset[label]='\dataset\train\mild\mild_al1.jpg'
 print(train_dataset)
+
+our_file = Path(os.path.abspath('dataset\\train\mild\mild_al1.jpg'))
+img = Image.open(our_file)
+train_dataset[label]=img
+img.close()
+print(train_dataset)
