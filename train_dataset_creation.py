@@ -13,5 +13,10 @@ print(train_dataset)# label name: path
 our_file = Path(os.path.abspath('dataset\\train\mild\mild_al1.jpg'))# using relative to get absolute path
 img = Image.open(our_file)
 train_dataset[label]=img
+print(f"Original size : {img.size}") # 5464x3640
+img_resized = img.resize((32, 32))
+train_dataset[label]=img_resized
 img.close()
 print(train_dataset)
+
+
