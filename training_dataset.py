@@ -48,7 +48,8 @@ for file in non_folder.iterdir():
     img.close()
 
 
-verymild_folder=os.path.abspath('dataset\\train\verymild')
+verymild_folder=os.path.abspath('dataset\\train\\verymild')
+print(verymild_folder)
 vm_folder = Path(verymild_folder)# using relative to get absolute path
 for file in vm_folder.iterdir():
     file_name = os.path.basename(file)
