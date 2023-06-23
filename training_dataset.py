@@ -6,7 +6,7 @@ from PIL import Image
 train_dataset = []
 labels=['mild_al','moderate_al','verymild_al','nondemented_al']
 n_labels=len(labels)
-
+n_samples = {}
 
 mild_folder=os.path.abspath('dataset\\train\mild')
 mil_folder = Path(mild_folder)# using relative to get absolute path
@@ -61,7 +61,6 @@ for file in non_folder.iterdir():
 
 
 verymild_folder=os.path.abspath('dataset\\train\\verymild')
-print(verymild_folder)
 vm_folder = Path(verymild_folder)# using relative to get absolute path
 verymild_counter=0
 for file in vm_folder.iterdir():
@@ -77,6 +76,6 @@ for file in vm_folder.iterdir():
     img.close()
     verymild_counter=verymild_counter+1
     
-print(train_dataset[0]['label'],labels[train_dataset[0]['label']])
 
-
+n_samples = {0:mild_counter,1:moderate_counter,2:nondemented_counter,3:verymild_counter}
+print(n_samples)
