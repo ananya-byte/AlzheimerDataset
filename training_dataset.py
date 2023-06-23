@@ -5,8 +5,7 @@ from PIL import Image
 
 train_dataset = []
 
-folder = os.path.abspath('\dataset\train\mild')
-our_file = Path(folder)# using relative to get absolute path
+
 mild_folder=os.path.abspath('dataset\\train\mild')
 our_folder = Path(mild_folder)# using relative to get absolute path
 for file in our_folder.iterdir():
@@ -20,3 +19,5 @@ for file in our_folder.iterdir():
     train_dataset.append(img_dict)
     img.close()
 print(train_dataset[0]['label'])
+
+
