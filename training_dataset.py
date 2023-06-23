@@ -34,7 +34,7 @@ for file in mod_folder.iterdir():
     img.close()
 
 
-nondemented_folder=os.path.abspath('dataset\\train\nondemented')
+nondemented_folder=os.path.abspath('dataset\\train\\nondemented')
 non_folder = Path(nondemented_folder)# using relative to get absolute path
 for file in non_folder.iterdir():
     file_name = os.path.basename(file)
@@ -48,7 +48,7 @@ for file in non_folder.iterdir():
     img.close()
 
 
-verymild_folder=os.path.abspath('dataset\\train\very-mild')
+verymild_folder=os.path.abspath('dataset\\train\verymild')
 vm_folder = Path(verymild_folder)# using relative to get absolute path
 for file in vm_folder.iterdir():
     file_name = os.path.basename(file)
