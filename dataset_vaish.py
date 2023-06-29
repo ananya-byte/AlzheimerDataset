@@ -8,7 +8,27 @@ labels=['mild_al','moderate_al','verymild_al','nondemented_al']
 n_labels=len(labels)
 n_samples = {}
 
-def  create_testing_dataset():
+
+mild_folder=os.path.abspath('dataset\\test\mild\mild_al1.jpg')
+mil_folder = Path(mild_folder)# using relative to get absolute path
+file_name=os.path.basename(mild_folder)
+x=re.search(r"[1-9]",mild_folder).span()
+print(x)
+
+
+
+        label = file_name[:re.search(r"[1-9]",file_name).span()[0]]
+        index=labels.index(label)
+        img = Image.open(file)
+        img_resized = img.resize((224, 224))
+        img_dict = {}
+        img_dict['img']=img_resized
+        img_dict['label']=index
+        test_dataset.append(img_dict)
+        img.close()
+
+
+    def  create_testing_dataset():
     mild_folder=os.path.abspath('dataset\\test\mild')
     mil_folder = Path(mild_folder)# using relative to get absolute path
     mild_counter=0
@@ -25,7 +45,9 @@ def  create_testing_dataset():
         img.close()
         mild_counter=mild_counter+1
 
+
         
+
 
     moderate_folder=os.path.abspath('dataset\\test\moderate')
     mod_folder = Path(moderate_folder)# using relative to get absolute path
