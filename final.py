@@ -22,3 +22,8 @@ test_dataset,labels,n_testlabels,n_testsamples = testd.create_testing_dataset()
 model_id = 'google/vit-base-patch16-224-in21k'
 feature_extractor = ViTFeatureExtractor.from_pretrained(model_id)
 print(feature_extractor)
+
+example = feature_extractor(train_dataset[0]['img'],return_tensors='pt')
+print(example)
+
+
