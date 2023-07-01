@@ -17,7 +17,7 @@ def  create_training_dataset():
         label = file_name[:re.search(r"[1-9]",file_name).span()[0]]
         index=labels.index(label)
         img = Image.open(file)
-        img_resized = img.resize((224, 224))
+        img_resized = img.resize((224, 224)).convert('RGB')
         img_dict = {}
         img_dict['img']=img_resized
         img_dict['label']=index
@@ -35,7 +35,7 @@ def  create_training_dataset():
         label = file_name[:re.search(r"[1-9]",file_name).span()[0]]
         index=labels.index(label)
         img = Image.open(file)
-        img_resized = img.resize((224, 224))
+        img_resized = img.resize((224, 224)).convert('RGB')
         img_dict = {}
         img_dict['img']=img_resized
         img_dict['label']=index
@@ -52,7 +52,7 @@ def  create_training_dataset():
         label = file_name[:re.search(r"[1-9]",file_name).span()[0]]
         index=labels.index(label)
         img = Image.open(file)
-        img_resized = img.resize((224, 224))
+        img_resized = img.resize((224, 224)).convert('RGB')
         img_dict = {}
         img_dict['img']=img_resized
         img_dict['label']=index
@@ -69,7 +69,7 @@ def  create_training_dataset():
         label = file_name[:re.search(r"[1-9]",file_name).span()[0]]
         index=labels.index(label)
         img = Image.open(file)
-        img_resized = img.resize((224, 224))
+        img_resized = img.resize((224, 224)).convert('RGB')
         img_dict = {}
         img_dict['img']=img_resized
         img_dict['label']=index
