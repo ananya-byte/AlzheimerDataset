@@ -17,7 +17,7 @@ def  create_testing_dataset():
         label = file_name[:re.search(r"[1-9]",file_name).span()[0]]
         index=labels.index(label)
         img = Image.open(file)
-        img_resized = img.resize((224, 224))
+        img_resized = img.resize((224, 224)).convert('RGB')
         img_dict = {}
         img_dict['img']=img_resized
         img_dict['label']=index
@@ -35,7 +35,7 @@ def  create_testing_dataset():
         label = file_name[:re.search(r"[1-9]",file_name).span()[0]]
         index=labels.index(label)
         img = Image.open(file)
-        img_resized = img.resize((224, 224))
+        img_resized = img.resize((224, 224)).convert('RGB')
         img_dict = {}
         img_dict['img']=img_resized
         img_dict['label']=index
@@ -52,7 +52,7 @@ def  create_testing_dataset():
         label = file_name[:re.search(r"[1-9]",file_name).span()[0]]
         index=labels.index(label)
         img = Image.open(file)
-        img_resized = img.resize((224, 224))
+        img_resized = img.resize((224, 224)).convert('RGB')
         img_dict = {}
         img_dict['img']=img_resized
         img_dict['label']=index
@@ -69,7 +69,7 @@ def  create_testing_dataset():
         label = file_name[:re.search(r"[1-9]",file_name).span()[0]]
         index=labels.index(label)
         img = Image.open(file)
-        img_resized = img.resize((224, 224))
+        img_resized = img.resize((224, 224)).convert('RGB')
         img_dict = {}
         img_dict['img']=img_resized
         img_dict['label']=index
@@ -79,6 +79,6 @@ def  create_testing_dataset():
         
 
     n_samples = {0:mild_counter,1:moderate_counter,2:nondemented_counter,3:verymild_counter}
-    print(n_samples)
+
     return test_dataset,labels,n_labels,n_samples
 create_testing_dataset()
