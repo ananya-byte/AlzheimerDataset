@@ -2,6 +2,9 @@ import training_dataset as traind
 import dataset_vaish as testd
 from transformers import ViTFeatureExtractor
 import torch
+import numpy as np
+from datasets import load_metric
+
 
 train_dataset = []
 labels=[]
@@ -44,3 +47,9 @@ prepared_test = test_dataset.with_transform(preprocess)
 
 def collate_fn(batch):
     return {'pixel_values': torch.stack([x['pixel_values'] for x in batch]),'labels': torch.tensor([x['label'] for x in batch])}
+
+
+# accuracy metric
+metric = load_metric("accuracy")
+def compute_metrics(p):
+    return metric.compute(predictions=np.argmax(p.predictions, axis=1),references=p.label_ids)
