@@ -41,9 +41,9 @@ def preprocess(batch):
     return inputs
 
 # transform the training dataset
-prepared_train = dataset_train.with_transform(preprocess)
+prepared_train = train_dataset.with_transform(preprocess)
 # ... and the testing dataset
-prepared_test = dataset_test.with_transform(preprocess)
+prepared_test = test_dataset.with_transform(preprocess)
 
 def collate_fn(batch):
     return {'pixel_values': torch.stack([x['pixel_values'] for x in batch]),'labels': torch.tensor([x['label'] for x in batch])}
