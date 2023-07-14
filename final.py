@@ -8,7 +8,7 @@ n_trainlabels=0
 n_trainsamples = {}
 
 train_dataset,labels,n_trainlabels,n_trainsamples = traind.create_training_dataset()
-print (train_dataset) 
+
 test_dataset = []
 labels=[]
 n_testlabels=0
