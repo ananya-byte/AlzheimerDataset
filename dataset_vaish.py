@@ -52,7 +52,7 @@ def read_images(dataset_path,batch_size):
     imagepaths = tf.convert_to_tensor(imagepaths, dtype=tf.string)
     labels = tf.convert_to_tensor(labels, dtype=tf.int32)
     # Build a TF Queue, shuffle data
-    image, label = tf.train.slice_input_producer([imagepaths, labels],
+    image, label = tf.compat.v1.train.slice_input_producer([imagepaths, labels],
                                                  shuffle=True)
 
     # Read images from disk
