@@ -10,9 +10,11 @@ img_height = 224# CHANGE HERE, the image height to be resized to
 img_width = 224 # CHANGE HERE, the image width to be resized to
 channels = 3 # The 3 color channels, change to 1 if grayscale
 batch_size= 130
-dataset = load_dataset("imagefolder", data_dir=DATASET_PATH,drop_labels=False)             
-def transforms(examples):
-    examples["pixel_values"] = [image.convert("RGB").resize((224,224)) for image in examples["image"]]
-    return examples
-dataset = dataset.map(transforms, remove_columns=["image"], batched=True)
-print(dataset["train"][0])
+
+def read_image():
+    dataset = load_dataset("imagefolder", data_dir=DATASET_PATH,drop_labels=False)             
+    def transforms(examples):
+        examples["pixel_values"] = [image.convert("RGB").resize((224,224)) for image in examples["image"]]
+        return examples
+    dataset = dataset.map(transforms, remove_columns=["image"], batched=True)
+    return dataset
