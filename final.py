@@ -1,5 +1,5 @@
 import training_dataset as traind
-import dataset_vaish as testd
+import testing_dataset as testd
 from transformers import ViTFeatureExtractor
 import torch
 import numpy as np
@@ -9,19 +9,14 @@ from datasets import load_metric
 train_dataset = []
 labels=[]
 n_trainlabels=0
-n_trainsamples = {}
 
-train_dataset,labels,n_trainlabels,n_trainsamples = traind.create_training_dataset()
+
+train_dataset,labels,n_trainlabels = traind.read_image()
 
 test_dataset = []
 labels=[]
 n_testlabels=0
-n_testsamples = {}
-
-test_dataset,labels,n_testlabels,n_testsamples = testd.create_testing_dataset()
-
-
-
+test_dataset,labels,n_testlabels = testd.read_image()
 # import model
 model_id = 'google/vit-base-patch16-224-in21k'
 feature_extractor = ViTFeatureExtractor.from_pretrained(model_id)
@@ -35,7 +30,7 @@ print(device)
 
 def preprocess(batch):
     # take a list of PIL images and turn them to pixel values
-    inputs = feature_extractor(batch['img'],return_tensors='pt')
+    inputs = feature_extractor(batch['image'],return_tensors='pt')
     # include the labels
     inputs['label'] = batch['label']
     return inputs
