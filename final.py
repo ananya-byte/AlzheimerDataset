@@ -20,7 +20,9 @@ n_testsamples = {}
 
 test_dataset,labels,n_testlabels,n_testsamples = testd.create_testing_dataset()
 
-
+my_tensor = torch.tensor(my_list)
+print(my_tensor)
+print(type(my_tensor))
 
 # import model
 model_id = 'google/vit-base-patch16-224-in21k'
@@ -41,9 +43,9 @@ def preprocess(batch):
     return inputs
 
 # transform the training dataset
-prepared_train = train_dataset.with_transform(preprocess)
+prepared_train = train_dataset_tensor.with_transform(preprocess)
 # ... and the testing dataset
-prepared_test = test_dataset.with_transform(preprocess)
+prepared_test = test_dataset_tensor.with_transform(preprocess)
 
 def collate_fn(batch):
     return {'pixel_values': torch.stack([x['pixel_values'] for x in batch]),'labels': torch.tensor([x['label'] for x in batch])}

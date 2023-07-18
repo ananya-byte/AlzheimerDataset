@@ -23,6 +23,8 @@ def read_image():
     labels = dataset["train"].features['label'].names
     num_classes = len(labels)
     print(labels)
+    print(dataset["train"][0]['image'].resize((200,200)))
     return dataset,labels,num_classes
+    
     
 read_image()
