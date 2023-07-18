@@ -19,6 +19,4 @@ def read_image():
     dataset = dataset.map(transforms, batched=True)
     labels = dataset["train"].features['label'].names
     num_classes = len(labels)
-    print(dataset["train"][0])
     return dataset,labels,num_classes
-read_image()
