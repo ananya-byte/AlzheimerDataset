@@ -4,19 +4,13 @@ from transformers import ViTFeatureExtractor
 import torch
 import numpy as np
 from datasets import load_metric
+from transformers import TrainingArguments
+from transformers import ViTForImageClassification
+from transformers import Trainer
 
 
-train_dataset = []
-labels=[]
-n_trainlabels=0
-
-
-train_dataset,labels,n_trainlabels = traind.read_image()
-
-test_dataset = []
-labels=[]
-n_testlabels=0
-test_dataset,labels,n_testlabels = testd.read_image()
+train_dataset = traind.read_image()
+test_dataset = testd.read_image()
 # import model
 model_id = 'google/vit-base-patch16-224-in21k'
 feature_extractor = ViTFeatureExtractor.from_pretrained(model_id)
@@ -48,3 +42,41 @@ def collate_fn(batch):
 metric = load_metric("accuracy")
 def compute_metrics(p):
     return metric.compute(predictions=np.argmax(p.predictions, axis=1),references=p.label_ids)
+
+training_args = TrainingArguments(
+  output_dir="./cifar",
+  per_device_train_batch_size=16,
+  evaluation_strategy="steps",
+  num_train_epochs=4,
+  save_steps=100,
+  eval_steps=100,
+  logging_steps=10,
+  learning_rate=2e-4,
+  save_total_limit=2,
+  remove_unused_columns=False,
+  push_to_hub=False,
+  load_best_model_at_end=True,
+)
+
+labels = train_dataset.features['label'].names
+model = ViTForImageClassification.from_pretrained(
+    model_id,  # classification head
+    num_labels=len(labels)
+)
+
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    data_collator=collate_fn,
+    compute_metrics=compute_metrics,
+    train_dataset=prepared_train,
+    eval_dataset=prepared_test,
+    tokenizer=feature_extractor,
+)
+train_results = trainer.train()
+# save tokenizer with the model
+trainer.save_model()
+trainer.log_metrics("train", train_results.metrics)
+trainer.save_metrics("train", train_results.metrics)
+# save the trainer state
+trainer.save_state()

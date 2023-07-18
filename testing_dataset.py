@@ -14,11 +14,9 @@ channels = 3
 batch_size= 130
 
 def read_image():
-    dataset = load_dataset("imagefolder", data_dir=DATASET_PATH,drop_labels=False)             
+    dataset = load_dataset("imagefolder", data_dir=DATASET_PATH,drop_labels=False,split="train")             
     def transforms(examples):
         examples["image"] = [image.convert("RGB").resize((224,224)) for image in examples["image"]]
         return examples
     dataset = dataset.map(transforms, batched=True)
-    labels = dataset["train"].features['label'].names
-    num_classes = len(labels)
-    return dataset,labels,num_classes
+    return dataset
