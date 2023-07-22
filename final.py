@@ -7,7 +7,8 @@ from datasets import load_metric
 from transformers import TrainingArguments
 from transformers import ViTForImageClassification
 from transformers import Trainer
-
+import pandas as pd
+import matplotlib.pyplot as plt
 
 train_dataset = traind.read_image()
 test_dataset = testd.read_image()
@@ -39,9 +40,18 @@ def collate_fn(batch):
 
 
 # accuracy metric
+cfm_metric = evaluate.load("BucketHeadP65/confusion_matrix")
+n= 0
 metric = load_metric("accuracy")
 def compute_metrics(p):
-    return metric.compute(predictions=np.argmax(p.predictions, axis=1),references=p.label_ids)
+    predictions=np.argmax(p.predictions, axis=1)
+    references=p.label_ids
+    global n
+    n = n+1
+    if (n==11):
+        results = cfm_metric.compute(references, predictions)
+        print(results)
+    return metric.compute(predictions,references)
 
 training_args = TrainingArguments(
   output_dir="./cifar",
@@ -80,3 +90,11 @@ trainer.log_metrics("train", train_results.metrics)
 trainer.save_metrics("train", train_results.metrics)
 # save the trainer state
 trainer.save_state()
+
+
+df = pd.DataFrame(trainer.state.log_history)
+df.plot(kind='line')
+# set the title
+plt.title('LinePlots')
+# show the plot
+plt.show()
