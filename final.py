@@ -9,6 +9,7 @@ from transformers import ViTForImageClassification
 from transformers import Trainer
 import pandas as pd
 import matplotlib.pyplot as plt
+import evaluate
 
 train_dataset = traind.read_image()
 test_dataset = testd.read_image()
