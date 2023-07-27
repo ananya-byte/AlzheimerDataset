@@ -20,3 +20,5 @@ Minor Project on ViT
 >pip install acccelerate -u
 
 >pip install evaluate
+
+>pip install bert_score
