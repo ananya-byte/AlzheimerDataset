@@ -45,14 +45,15 @@ cfm_metric = evaluate.load("BucketHeadP65/confusion_matrix")
 n= 0
 metric = load_metric("accuracy")
 def compute_metrics(p):
-    predictions=np.argmax(p.predictions, axis=1)
-    references=p.label_ids
     global n
     n = n+1
-    if (n==11):
-        results = cfm_metric.compute(references, predictions)
+    if (n>11):
+        results = cfm_metric.compute(references=p.label_ids, predictions=np.argmax(p.predictions, axis=1))
         print(results)
-    return metric.compute(predictions,references)
+    return metric.compute(
+        predictions=np.argmax(p.predictions, axis=1),
+        references=p.label_ids
+    )
 
 training_args = TrainingArguments(
   output_dir="./cifar",
