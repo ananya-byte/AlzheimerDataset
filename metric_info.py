@@ -1,6 +1,6 @@
-from datasets import load_metric
+from datasets import list_metrics,load_metric
 metrics_list = list_metrics()
-l = len(metric_list)
+l = len(metrics_list)
 for x in range(0,l):
-    metric = load_metric(metrics_list[1])
+    metric = load_metric(metrics_list[l])
     print(metric.inputs_description)
