@@ -11,9 +11,9 @@ Minor Project on ViT
 
 >pip install matplotlib
 
->pip install tensorflow>
+>pip install tensorflow
 
->pip installl sckit-learn
+>pip install scikit-learn
 
 >pip install huggingface
 
@@ -22,3 +22,6 @@ Minor Project on ViT
 >pip install evaluate
 
 >pip install bert_score
+
+>pip install panda
+
