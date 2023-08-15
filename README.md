@@ -25,3 +25,5 @@ Minor Project on ViT
 
 >pip install panda
 
+>pip install git+https://github.com/google-research/bleurt.git
+
