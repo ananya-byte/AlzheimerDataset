@@ -17,6 +17,8 @@ def read_image():
     dataset = load_dataset("imagefolder", data_dir=DATASET_PATH,drop_labels=False,split="train")             
     def transforms(examples):
         examples["image"] = [image.convert("RGB").resize((224,224)) for image in examples["image"]]
+        print(examples["image"])
         return examples
     dataset = dataset.map(transforms, batched=True)
     return dataset
+read_image()
