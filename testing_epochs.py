@@ -12,7 +12,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import evaluate
 from datasets import load_dataset, Image
-
+import PySimpleGUI as sg
+import os.path
+from PIL import Image
+import os
+import time
 train_dataset = traind.read_image()
 test_dataset = testd.read_image()
 # import model
@@ -92,18 +96,85 @@ trainer.save_metrics("train", train_results.metrics)
 # save the trainer state
 trainer.save_state()
 
-def output_result(path):
-    dataset = Dataset.from_dict({"image": [path]}).cast_column("image", Image())
-    image = dataset["image"][0].resize((200,200))
-    inputs = feature_extractor(image, return_tensors="pt")
 
-    with torch.no_grad():
-        logits = model(**inputs).logits
-    predicted_label = logits.argmax(-1).item()
-    labels = dataset_test.features['label']
-    return labels.names[predicted_label]
+# img_viewer.py
 
-while(1):
-    Path = gui.get_input()
-    result = output_results(Path)
-    gui.print_output(result)
+
+# First the window layout in 2 columns
+
+file_list_column = [
+    [
+        sg.Text("Image Folder"),
+        sg.In(size=(25, 1), enable_events=True, key="-FOLDER-"),
+        sg.FolderBrowse(),
+    ],
+    [
+        sg.Listbox(
+            values=[], enable_events=True, size=(40, 20), key="-FILE LIST-"
+        )
+    ],
+]
+
+# For now will only show the name of the file that was chosen
+image_viewer_column = [
+    [sg.Text("Choose an image from list on left:")],
+    [sg.Text(size=(40, 1), key="-TOUT-")],
+    [sg.Image(key="-IMAGE-")],
+    [sg.Text(size=(40, 1), key="-RESULT-")],
+]
+
+# ----- Full layout -----
+layout = [
+    [
+        sg.Column(file_list_column),
+        sg.VSeperator(),
+        sg.Column(image_viewer_column),
+    ]
+]
+
+window = sg.Window("Image Viewer", layout)
+
+layout = [
+            [sg.Image(r'C:\PySimpleGUI\Logos\PySimpleGUI_Logo_320.png')],
+         ]
+
+    # Run the Event Loop
+while True:
+    event, values = window.read()
+    if event == "Exit" or event == sg.WIN_CLOSED:
+        break
+    # Folder name was filled in, make a list of files in the folder
+    if event == "-FOLDER-":
+        folder = values["-FOLDER-"]
+        try:
+        # Get list of files in folder
+            file_list = os.listdir(folder)
+        except:
+            file_list = []
+
+        fnames = [
+            f
+            for f in file_list
+            if os.path.isfile(os.path.join(folder, f))
+            and f.lower().endswith((".png", ".gif"))
+        ]
+        window["-FILE LIST-"].update(fnames)
+    elif event == "-FILE LIST-":  # A file was chosen from the listbox
+        try:
+            filename = os.path.join(
+                values["-FOLDER-"], values["-FILE LIST-"][0])
+            window["-TOUT-"].update(values["-FILE LIST-"][0].split("_")[0])
+            window["-IMAGE-"].update(filename=filename)
+            dataset = Dataset.from_dict({"image": [filename]}).cast_column("image", Image())
+            image = dataset["image"][0].resize((200,200))
+            window["-TOUT-"].update("working1")
+            inputs = feature_extractor(image, return_tensors="pt")
+            with torch.no_grad():
+                logits = model(**inputs).logits
+                window["-TOUT-"].update("working3")
+            predicted_label = logits.argmax(-1).item()
+            labels = dataset.features['label']
+            window["-TOUT-"].update("working")
+        except:
+            pass
+window.close()
