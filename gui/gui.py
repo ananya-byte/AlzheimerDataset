@@ -25,6 +25,7 @@ image_viewer_column = [
     [sg.Text("Choose an image from list on left:")],
     [sg.Text(size=(40, 1), key="-TOUT-")],
     [sg.Image(key="-IMAGE-")],
+    [sg.Text(size=(40, 1), key="-RESULT-")],
 ]
 
 # ----- Full layout -----
@@ -41,37 +42,38 @@ window = sg.Window("Image Viewer", layout)
 layout = [
             [sg.Image(r'C:\PySimpleGUI\Logos\PySimpleGUI_Logo_320.png')],
          ]
+def input_result():
+    # Run the Event Loop
+    while True:
+        event, values = window.read()
+        if event == "Exit" or event == sg.WIN_CLOSED:
+            break
+        # Folder name was filled in, make a list of files in the folder
+        if event == "-FOLDER-":
+            folder = values["-FOLDER-"]
+            try:
+                # Get list of files in folder
+                file_list = os.listdir(folder)
+            except:
+                file_list = []
 
-# Run the Event Loop
-while True:
-    event, values = window.read()
-    if event == "Exit" or event == sg.WIN_CLOSED:
-        break
-    # Folder name was filled in, make a list of files in the folder
-    if event == "-FOLDER-":
-        folder = values["-FOLDER-"]
-        try:
-            # Get list of files in folder
-            file_list = os.listdir(folder)
-        except:
-            file_list = []
+            fnames = [
+                f
+                for f in file_list
+                if os.path.isfile(os.path.join(folder, f))
+                and f.lower().endswith((".png", ".gif"))
+            ]
+            window["-FILE LIST-"].update(fnames)
+        elif event == "-FILE LIST-":  # A file was chosen from the listbox
+            try:
+                filename = os.path.join(
+                    values["-FOLDER-"], values["-FILE LIST-"][0]
+                )
+                window["-TOUT-"].update(filename)
+                window["-IMAGE-"].update(filename=filename)
 
-        fnames = [
-            f
-            for f in file_list
-            if os.path.isfile(os.path.join(folder, f))
-            and f.lower().endswith((".png", ".gif"))
-        ]
-        window["-FILE LIST-"].update(fnames)
-    elif event == "-FILE LIST-":  # A file was chosen from the listbox
-        try:
-            filename = os.path.join(
-                values["-FOLDER-"], values["-FILE LIST-"][0]
-            )
-            window["-TOUT-"].update(filename)
-            window["-IMAGE-"].update(filename=filename)
-
-        except:
-            pass
-
+            except:
+                pass
+def print_out(result):
+    window["-RESULT-"].update(result)
 window.close()

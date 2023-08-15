@@ -1,5 +1,6 @@
 import training_dataset as traind
 import testing_dataset as testd
+import gui
 from transformers import ViTFeatureExtractor
 import torch
 import numpy as np
@@ -10,6 +11,7 @@ from transformers import Trainer
 import pandas as pd
 import matplotlib.pyplot as plt
 import evaluate
+from datasets import load_dataset, Image
 
 train_dataset = traind.read_image()
 test_dataset = testd.read_image()
@@ -57,10 +59,10 @@ training_args = TrainingArguments(
   per_device_train_batch_size=32,
   evaluation_strategy="steps",
   num_train_epochs=4,
-  save_steps=159,
-  eval_steps=159,
-  logging_steps=10,
-  learning_rate=2e-4,
+  save_steps=300,
+  eval_steps=300,
+  logging_steps=300,
+  learning_rate=5e-4,
   save_total_limit=2,
   remove_unused_columns=False,
   push_to_hub=False,
@@ -90,10 +92,18 @@ trainer.save_metrics("train", train_results.metrics)
 # save the trainer state
 trainer.save_state()
 
+def output_result(path):
+    dataset = Dataset.from_dict({"image": [path]}).cast_column("image", Image())
+    image = dataset["image"][0].resize((200,200))
+    inputs = feature_extractor(image, return_tensors="pt")
 
-df = pd.DataFrame(trainer.state.log_history)
-df.plot(kind='line')
-# set the title
-plt.title('LinePlots')
-# show the plot
-plt.show()
+    with torch.no_grad():
+        logits = model(**inputs).logits
+    predicted_label = logits.argmax(-1).item()
+    labels = dataset_test.features['label']
+    return labels.names[predicted_label]
+
+while(1):
+    Path = gui.get_input()
+    result = output_results(Path)
+    gui.print_output(result)
