@@ -40,17 +40,10 @@ cwd = os.getcwd()
 #### Define augmentation sequence ####
 # This can be tweaked to create a huge variety of image augmentations.
 # See https://github.com/aleju/imgaug for a list of augmentation techniques available.
-seq1 = iaa.Sequential([
-    iaa.Fliplr(0.5),                             # Horizontal flip 50% of images
-    iaa.Crop(percent=(0, 0.10)),                 # Crop all images between 0% to 10%
-    iaa.GaussianBlur(sigma=(0, 1)),              # Add slight blur to images
-##    iaa.Multiply((0.7, 1.3), per_channel=0.2),   # Slightly brighten, darken, or recolor images
-##    iaa.Affine(
-##        scale={"x": (0.8, 1.2), "y": (0.8,1.2)},                # Resize image
-##        translate_percent={"x": (-0.1, 0.1), "y": (-0.1, 0.1)}, # Translate image
-##        rotate=(-5, 5),                                         # Rotate image
-##        mode=ia.ALL, cval=(0,255)                               # Filling in extra pixels
-##        )
+seq1 = iaa.Sequential([ 
+    iaa.GaussianBlur(sigma=(1,2)),              # Add slight blur to images
+   iaa.Multiply((0.7, 1.3), per_channel=0.2),   # Slightly brighten, darken, or recolor images
+    iaa.AdditiveGaussianNoise(scale=(0, 0.2*255))
     ])
 
 
